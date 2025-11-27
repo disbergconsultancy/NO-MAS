@@ -1,7 +1,7 @@
 # CalSync Makefile
 # Simple commands for building and installing CalSync
 
-.PHONY: build install uninstall clean run help test
+.PHONY: build install uninstall clean run help test release
 
 # Configuration
 APP_NAME := CalSync
@@ -19,6 +19,7 @@ help:
 	@echo "  make run        Build and run the app"
 	@echo "  make clean      Remove build artifacts"
 	@echo "  make test       Run unit tests"
+	@echo "  make release    Create a release package (VERSION=x.x.x)"
 	@echo ""
 
 build:
@@ -57,3 +58,7 @@ clean:
 test:
 	@echo "🧪 Running tests..."
 	@swift run CalSyncTests
+
+release:
+	@chmod +x scripts/release.sh
+	@./scripts/release.sh $(VERSION)

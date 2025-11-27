@@ -29,18 +29,30 @@ A macOS menu bar app that syncs busy time blocks across multiple calendars. Perf
 
 ## Installation
 
-### Quick Install (Recommended)
+### Install via Homebrew (Recommended)
+
+```bash
+# Add the CalSync tap
+brew tap disbergconsultancy/calsync
+
+# Install CalSync
+brew install --cask calsync
+```
+
+That's it! CalSync will be installed to `/Applications/CalSync.app`.
+
+### Build from Source
 
 ```bash
 # Clone the repository
-git clone <repo-url>
+git clone https://github.com/disbergconsultancy/CAL-SYNC.git
 cd CAL-SYNC
 
 # Install to /Applications
 make install
 ```
 
-That's it! The app will be built and installed to `/Applications/CalSync.app`.
+The app will be built and installed to `/Applications/CalSync.app`.
 
 ### Other Make Commands
 
@@ -50,6 +62,7 @@ make install    # Build and install to /Applications
 make uninstall  # Remove from /Applications
 make run        # Build and run the app directly
 make clean      # Remove build artifacts
+make release    # Create a release package (VERSION=x.x.x)
 make help       # Show available commands
 ```
 
