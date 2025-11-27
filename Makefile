@@ -1,0 +1,59 @@
+# CalSync Makefile
+# Simple commands for building and installing CalSync
+
+.PHONY: build install uninstall clean run help test
+
+# Configuration
+APP_NAME := CalSync
+BUILD_DIR := .build/release
+APP_BUNDLE := $(BUILD_DIR)/$(APP_NAME).app
+INSTALL_DIR := /Applications
+
+help:
+	@echo "CalSync - macOS Calendar Sync App"
+	@echo ""
+	@echo "Usage:"
+	@echo "  make build      Build the app bundle"
+	@echo "  make install    Build and install to /Applications"
+	@echo "  make uninstall  Remove from /Applications"
+	@echo "  make run        Build and run the app"
+	@echo "  make clean      Remove build artifacts"
+	@echo "  make test       Run unit tests"
+	@echo ""
+
+build:
+	@echo "🔨 Building CalSync..."
+	@./scripts/build.sh
+
+install: build
+	@echo "📦 Installing to $(INSTALL_DIR)..."
+	@if [ -d "$(INSTALL_DIR)/$(APP_NAME).app" ]; then \
+		echo "⚠️  Removing existing installation..."; \
+		rm -rf "$(INSTALL_DIR)/$(APP_NAME).app"; \
+	fi
+	@cp -r "$(APP_BUNDLE)" "$(INSTALL_DIR)/"
+	@echo "✅ CalSync installed to $(INSTALL_DIR)/$(APP_NAME).app"
+	@echo ""
+	@echo "Launch with: open /Applications/CalSync.app"
+
+uninstall:
+	@echo "🗑️  Uninstalling CalSync..."
+	@if [ -d "$(INSTALL_DIR)/$(APP_NAME).app" ]; then \
+		rm -rf "$(INSTALL_DIR)/$(APP_NAME).app"; \
+		echo "✅ CalSync removed from $(INSTALL_DIR)"; \
+	else \
+		echo "ℹ️  CalSync is not installed in $(INSTALL_DIR)"; \
+	fi
+
+run: build
+	@echo "🚀 Launching CalSync..."
+	@open "$(APP_BUNDLE)"
+
+clean:
+	@echo "🧹 Cleaning build artifacts..."
+	@rm -rf .build
+	@echo "✅ Clean complete"
+
+test:
+	@echo "🧪 Running tests..."
+	@swift run CalSyncTests

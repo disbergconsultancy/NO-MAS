@@ -1,0 +1,44 @@
+{
+    "configurations": [
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:CAL-SYNC}",
+            "name": "Debug CalSync",
+            "target": "CalSync",
+            "configuration": "debug",
+            "preLaunchTask": "swift: Build Debug CalSync"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:CAL-SYNC}",
+            "name": "Release CalSync",
+            "target": "CalSync",
+            "configuration": "release",
+            "preLaunchTask": "swift: Build Release CalSync"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:CAL-SYNC}",
+            "name": "Debug CalSyncTests",
+            "target": "CalSyncTests",
+            "configuration": "debug",
+            "preLaunchTask": "swift: Build Debug CalSyncTests"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:CAL-SYNC}",
+            "name": "Release CalSyncTests",
+            "target": "CalSyncTests",
+            "configuration": "release",
+            "preLaunchTask": "swift: Build Release CalSyncTests"
+        }
+    ]
+}
