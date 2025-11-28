@@ -1,5 +1,5 @@
 import Foundation
-import CalSyncCore
+import NoMasCore
 
 // MARK: - Simple Test Framework
 
@@ -492,7 +492,7 @@ func runSettingsTests() {
     print("\n📋 Settings Tests")
     print("=".padding(toLength: 50, withPad: "=", startingAt: 0))
     
-    let testSuiteName = "CalSyncTestSettings"
+    let testSuiteName = "NoMasTestSettings"
     guard let testDefaults = UserDefaults(suiteName: testSuiteName) else {
         print("  ❌ Could not create test UserDefaults")
         return
@@ -588,7 +588,7 @@ func runSettingsTests() {
 @main
 struct TestRunner {
     static func main() {
-        print("🧪 CalSync Test Suite")
+        print("🧪 No Mas! Test Suite")
         print("=".padding(toLength: 50, withPad: "=", startingAt: 0))
         
         runBlockMarkerTests()

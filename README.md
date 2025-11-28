@@ -1,6 +1,6 @@
-# CalSync
+# No Mas!
 
-A macOS menu bar app that syncs busy time blocks across multiple calendars. Perfect for managing multiple work accounts where third-party calendar sync tools are blocked by enterprise policies.
+**No Meeting Auto-Accept** - A macOS menu bar app that syncs busy time blocks across multiple calendars. Perfect for managing multiple work accounts where third-party calendar sync tools are blocked by enterprise policies.
 
 ## Features
 
@@ -16,7 +16,7 @@ A macOS menu bar app that syncs busy time blocks across multiple calendars. Perf
 
 ## How It Works
 
-1. CalSync reads events from all your enabled calendars via macOS Calendar.app
+1. No Mas! reads events from all your enabled calendars via macOS Calendar.app
 2. For each event in Calendar A, it creates a "Busy - Calendar A" block in Calendar B, C, etc.
 3. Blocks are tagged with hidden markers to prevent sync loops
 4. When events are deleted or changed, corresponding blocks are updated automatically
@@ -32,14 +32,14 @@ A macOS menu bar app that syncs busy time blocks across multiple calendars. Perf
 ### Install via Homebrew (Recommended)
 
 ```bash
-# Add the CalSync tap
-brew tap disbergconsultancy/calsync
+# Add the No Mas! tap
+brew tap disbergconsultancy/nomas
 
-# Install CalSync
-brew install --cask calsync
+# Install No Mas!
+brew install --cask nomas
 ```
 
-That's it! CalSync will be installed to `/Applications/CalSync.app`.
+That's it! No Mas! will be installed to `/Applications/NoMas.app`.
 
 ### Build from Source
 
@@ -52,7 +52,7 @@ cd CAL-SYNC
 make install
 ```
 
-The app will be built and installed to `/Applications/CalSync.app`.
+The app will be built and installed to `/Applications/NoMas.app`.
 
 ### Other Make Commands
 
@@ -78,7 +78,7 @@ chmod +x scripts/build.sh
 ./scripts/build.sh
 
 # Install to Applications
-cp -r .build/release/CalSync.app /Applications/
+cp -r .build/release/NoMas.app /Applications/
 ```
 
 ## Setup
@@ -88,8 +88,8 @@ cp -r .build/release/CalSync.app /Applications/
    - Add your Microsoft 365, Google, or other calendar accounts
    - Make sure calendars are visible in the Calendar.app
 
-2. **Launch CalSync**
-   - Double-click CalSync.app or launch from Applications
+2. **Launch No Mas!**
+   - Double-click NoMas.app or launch from Applications
    - Grant calendar access when prompted
 
 3. **Configure calendars**
@@ -113,7 +113,7 @@ cp -r .build/release/CalSync.app /Applications/
 | Sync All-Day Events | Include all-day events | Off |
 | Sync Recurring as Series | Sync recurring events as a single series instead of individual blocks | On |
 | Show Notifications | Notify on sync completion | On |
-| Launch at Login | Start CalSync with macOS | Off |
+| Launch at Login | Start No Mas! with macOS | Off |
 
 ### Block Title Format
 
@@ -124,10 +124,10 @@ Use `{source_name}` placeholder for the source calendar/account name:
 
 ## How Sync Loop Prevention Works
 
-CalSync prevents infinite sync loops by embedding a hidden marker in each created block:
+No Mas! prevents infinite sync loops by embedding a hidden marker in each created block:
 
 ```
-<!-- CALSYNC:BLOCK:source=calendar_id:id=event_id -->
+<!-- NOMAS:BLOCK:source=calendar_id:id=event_id -->
 ```
 
 When scanning calendars, any event containing this marker is recognized as a synced block and ignored, ensuring only "real" events trigger new blocks.
@@ -136,12 +136,12 @@ When scanning calendars, any event containing this marker is recognized as a syn
 
 ### "App is damaged" or "cannot be opened"
 
-CalSync is not notarized by Apple (notarization requires an Apple Developer account). macOS Gatekeeper may show a warning when opening the app.
+No Mas! is not notarized by Apple (notarization requires an Apple Developer account). macOS Gatekeeper may show a warning when opening the app.
 
 **Fix:** Remove the quarantine attribute:
 
 ```bash
-xattr -cr /Applications/CalSync.app
+xattr -cr /Applications/NoMas.app
 ```
 
 Then try opening the app again. This is safe - the app is ad-hoc code signed and runs entirely locally.
@@ -149,8 +149,8 @@ Then try opening the app again. This is safe - the app is ad-hoc code signed and
 ### "No calendars found"
 
 - Make sure calendar accounts are added in System Settings > Internet Accounts
-- Ensure CalSync has calendar access in System Settings > Privacy & Security > Calendars
-- Try quitting and reopening CalSync
+- Ensure No Mas! has calendar access in System Settings > Privacy & Security > Calendars
+- Try quitting and reopening No Mas!
 
 ### Blocks not appearing
 
@@ -161,13 +161,13 @@ Then try opening the app again. This is safe - the app is ad-hoc code signed and
 
 ### Enterprise account issues
 
-CalSync uses macOS's native calendar integration, which typically works even when third-party apps are blocked. If your enterprise blocks all calendar access:
+No Mas! uses macOS's native calendar integration, which typically works even when third-party apps are blocked. If your enterprise blocks all calendar access:
 1. Verify you can see the calendar in macOS Calendar.app
 2. Make sure the calendar allows modifications (read-only calendars cannot receive blocks)
 
 ### Performance
 
-CalSync is lightweight and efficient:
+No Mas! is lightweight and efficient:
 - Runs entirely in the menu bar (no dock icon)
 - Only syncs when needed
 - Uses macOS EventKit for efficient calendar access
@@ -179,8 +179,8 @@ CalSync is lightweight and efficient:
 ```
 CAL-SYNC/
 ├── Package.swift                 # Swift Package manifest
-├── Sources/CalSync/
-│   ├── CalSyncApp.swift         # App entry point
+├── Sources/NoMas/
+│   ├── NoMasApp.swift           # App entry point
 │   ├── AppDelegate.swift        # Menu bar setup
 │   ├── Services/
 │   │   └── SyncEngine.swift     # Core sync logic
@@ -204,7 +204,7 @@ CAL-SYNC/
 swift build
 
 # Run directly (without app bundle)
-swift run CalSync
+swift run NoMas
 
 # Build release version
 swift build -c release
@@ -216,12 +216,12 @@ swift build -c release
 
 ## Privacy
 
-CalSync:
+No Mas!:
 - ✅ Runs entirely locally on your Mac
 - ✅ Does not send any data to external servers
 - ✅ Only creates "Busy" blocks (no event details copied)
 - ✅ Stores settings in local UserDefaults
-- ✅ Logs stored locally in ~/Library/Application Support/CalSync/
+- ✅ Logs stored locally in ~/Library/Application Support/NoMas/
 
 ## License
 

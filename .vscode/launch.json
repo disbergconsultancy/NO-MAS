@@ -39,6 +39,46 @@
             "target": "CalSyncTests",
             "configuration": "release",
             "preLaunchTask": "swift: Build Release CalSyncTests"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:CAL-SYNC}",
+            "name": "Debug NoMas",
+            "target": "NoMas",
+            "configuration": "debug",
+            "preLaunchTask": "swift: Build Debug NoMas"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:CAL-SYNC}",
+            "name": "Release NoMas",
+            "target": "NoMas",
+            "configuration": "release",
+            "preLaunchTask": "swift: Build Release NoMas"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:CAL-SYNC}",
+            "name": "Debug NoMasTests",
+            "target": "NoMasTests",
+            "configuration": "debug",
+            "preLaunchTask": "swift: Build Debug NoMasTests"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:CAL-SYNC}",
+            "name": "Release NoMasTests",
+            "target": "NoMasTests",
+            "configuration": "release",
+            "preLaunchTask": "swift: Build Release NoMasTests"
         }
     ]
 }

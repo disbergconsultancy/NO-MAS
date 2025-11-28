@@ -1,14 +1,15 @@
 #!/bin/bash
 
-# CalSync Build Script
+# No Mas! Build Script
 # Creates a proper macOS .app bundle from the Swift package
 
 set -e
 
-echo "🔨 Building CalSync..."
+echo "🔨 Building No Mas!..."
 
 # Configuration
-APP_NAME="CalSync"
+APP_NAME="NoMas"
+DISPLAY_NAME="No Mas!"
 BUILD_DIR=".build/release"
 APP_BUNDLE="$BUILD_DIR/$APP_NAME.app"
 CONTENTS_DIR="$APP_BUNDLE/Contents"
@@ -31,15 +32,15 @@ mkdir -p "$RESOURCES_DIR"
 cp "$BUILD_DIR/$APP_NAME" "$MACOS_DIR/"
 
 # Copy Info.plist
-cp "Sources/CalSync/Resources/Info.plist" "$CONTENTS_DIR/"
+cp "Sources/NoMas/Resources/Info.plist" "$CONTENTS_DIR/"
 
 # Create PkgInfo
 echo -n "APPL????" > "$CONTENTS_DIR/PkgInfo"
 
 # Copy any additional resources
-if [ -d "Sources/CalSync/Resources" ]; then
+if [ -d "Sources/NoMas/Resources" ]; then
     # Copy resources except Info.plist (already copied)
-    find "Sources/CalSync/Resources" -type f ! -name "Info.plist" -exec cp {} "$RESOURCES_DIR/" \;
+    find "Sources/NoMas/Resources" -type f ! -name "Info.plist" -exec cp {} "$RESOURCES_DIR/" \;
 fi
 
 # Ad-hoc code sign the app bundle

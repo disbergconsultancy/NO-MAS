@@ -5,17 +5,17 @@
     <key>CFBundleDevelopmentRegion</key>
     <string>en</string>
     <key>CFBundleExecutable</key>
-    <string>CalSync</string>
+    <string>NoMas</string>
     <key>CFBundleIconFile</key>
     <string>2d2444e8aa4728fb184fb399f7fc3733_Calendar</string>
     <key>CFBundleIconName</key>
     <string>2d2444e8aa4728fb184fb399f7fc3733_Calendar</string>
     <key>CFBundleIdentifier</key>
-    <string>com.calsync.app</string>
+    <string>com.nomas.app</string>
     <key>CFBundleInfoDictionaryVersion</key>
     <string>6.0</string>
     <key>CFBundleName</key>
-    <string>CalSync</string>
+    <string>No Mas!</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleShortVersionString</key>
@@ -29,9 +29,9 @@
     <key>LSUIElement</key>
     <true/>
     <key>NSCalendarsUsageDescription</key>
-    <string>CalSync needs access to your calendars to sync busy time blocks between them.</string>
+    <string>No Mas! needs access to your calendars to sync busy time blocks between them.</string>
     <key>NSCalendarsFullAccessUsageDescription</key>
-    <string>CalSync needs full access to your calendars to create and manage busy time blocks.</string>
+    <string>No Mas! needs full access to your calendars to create and manage busy time blocks.</string>
     <key>NSHumanReadableCopyright</key>
     <string>Copyright © 2024. All rights reserved.</string>
     <key>NSPrincipalClass</key>

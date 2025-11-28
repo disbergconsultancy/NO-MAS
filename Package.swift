@@ -2,14 +2,14 @@
 import PackageDescription
 
 let package = Package(
-    name: "CalSync",
+    name: "NoMas",
     platforms: [
         .macOS(.v13)
     ],
     products: [
-        .executable(name: "CalSync", targets: ["CalSync"]),
-        .executable(name: "CalSyncTests", targets: ["CalSyncTests"]),
-        .library(name: "CalSyncCore", targets: ["CalSyncCore"])
+        .executable(name: "NoMas", targets: ["NoMas"]),
+        .executable(name: "NoMasTests", targets: ["NoMasTests"]),
+        .library(name: "NoMasCore", targets: ["NoMasCore"])
     ],
     dependencies: [
         .package(url: "https://github.com/sindresorhus/LaunchAtLogin-Modern", from: "1.0.0")
@@ -17,25 +17,25 @@ let package = Package(
     targets: [
         // Core library containing testable logic
         .target(
-            name: "CalSyncCore",
+            name: "NoMasCore",
             dependencies: [],
-            path: "Sources/CalSyncCore"
+            path: "Sources/NoMasCore"
         ),
         // Main executable
         .executableTarget(
-            name: "CalSync",
+            name: "NoMas",
             dependencies: [
-                "CalSyncCore",
+                "NoMasCore",
                 .product(name: "LaunchAtLogin", package: "LaunchAtLogin-Modern")
             ],
-            path: "Sources/CalSync",
+            path: "Sources/NoMas",
             exclude: ["Resources/Info.plist"]
         ),
         // Test executable
         .executableTarget(
-            name: "CalSyncTests",
-            dependencies: ["CalSyncCore"],
-            path: "Tests/CalSyncTests",
+            name: "NoMasTests",
+            dependencies: ["NoMasCore"],
+            path: "Tests/NoMasTests",
             sources: ["TestRunner.swift"]
         )
     ]

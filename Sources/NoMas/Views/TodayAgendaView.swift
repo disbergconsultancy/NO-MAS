@@ -117,18 +117,22 @@ struct TodayAgendaView: View {
             // Hour grid lines and labels
             VStack(spacing: 0) {
                 ForEach(startHour..<endHour, id: \.self) { hour in
-                    HStack(alignment: .top, spacing: 4) {
-                        // Hour label
-                        Text(String(format: "%02d", hour))
-                            .font(.system(size: 10, weight: .medium, design: .monospaced))
-                            .foregroundColor(.secondary)
-                            .frame(width: timelineWidth, alignment: .trailing)
-                        
-                        // Hour line
-                        VStack {
-                            Divider()
+                    ZStack(alignment: .topLeading) {
+                        // Hour line - positioned at top
+                        HStack(spacing: 0) {
                             Spacer()
+                                .frame(width: timelineWidth + 6)
+                            Rectangle()
+                                .fill(Color.secondary.opacity(0.3))
+                                .frame(height: 1)
                         }
+                        
+                        // Hour label - centered vertically on the line
+                        Text(String(format: "%02d", hour))
+                            .font(.system(size: 11, weight: .medium, design: .monospaced))
+                            .foregroundColor(.primary.opacity(0.6))
+                            .frame(width: timelineWidth, alignment: .trailing)
+                            .offset(y: -6) // Center the label on the line
                     }
                     .frame(height: hourHeight)
                 }
@@ -280,19 +284,31 @@ struct TodayAgendaView: View {
     private var nowIndicator: some View {
         let yPosition = positionForTime(Date())
         
-        return HStack(spacing: 2) {
-            // Time label
+        return HStack(spacing: 0) {
+            // Time label with background pill
             Text(currentTimeString)
-                .font(.system(size: 8, weight: .bold, design: .monospaced))
-                .foregroundColor(.red)
-                .frame(width: timelineWidth, alignment: .trailing)
+                .font(.system(size: 10, weight: .bold, design: .monospaced))
+                .foregroundColor(.white)
+                .padding(.horizontal, 4)
+                .padding(.vertical, 2)
+                .background(
+                    Capsule()
+                        .fill(Color.red)
+                )
+                .frame(width: timelineWidth + 8, alignment: .trailing)
             
-            // Line
+            // Red dot at line start
+            Circle()
+                .fill(Color.red)
+                .frame(width: 8, height: 8)
+                .offset(x: -4)
+            
+            // Line - thicker for visibility
             Rectangle()
                 .fill(Color.red)
-                .frame(height: 1)
+                .frame(height: 2)
         }
-        .offset(y: yPosition - 4)
+        .offset(y: yPosition - 5)
         .id("nowIndicator")
     }
     
