@@ -6,6 +6,8 @@ struct TodayAgendaView: View {
     @ObservedObject var syncEngine: SyncEngine
     @State private var selectedDate: Date = Date()
     @State private var events: [EKEvent] = []
+    @State private var todayMeetingTime: TimeInterval = 0
+    @State private var weekMeetingTime: TimeInterval = 0
     @AppStorage("hideAllDayEvents") private var hideAllDayEvents: Bool = false
     
     // Timeline configuration - full day
@@ -31,6 +33,9 @@ struct TodayAgendaView: View {
             // Header with date navigation
             dateNavigationHeader
             
+            // Meeting time summary
+            meetingTimeSummary
+            
             Divider()
             
             // Timeline
@@ -41,6 +46,7 @@ struct TodayAgendaView: View {
                 }
                 .onAppear {
                     loadEvents()
+                    loadMeetingTimes()
                     // Scroll to current time if viewing today
                     if Calendar.current.isDateInToday(selectedDate) {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -50,9 +56,60 @@ struct TodayAgendaView: View {
                 }
             }
         }
-        .frame(width: 240, height: 380)
+        .frame(width: 240, height: 400)
         .onChange(of: selectedDate) { _ in
             loadEvents()
+            loadMeetingTimes()
+        }
+    }
+    
+    // MARK: - Meeting Time Summary
+    
+    private var meetingTimeSummary: some View {
+        HStack(spacing: 4) {
+            Image(systemName: "clock")
+                .font(.system(size: 10))
+                .foregroundColor(.secondary)
+            
+            Text(formatDuration(todayMeetingTime))
+                .font(.system(size: 11, weight: .medium))
+                .foregroundColor(.primary)
+            
+            Text("today")
+                .font(.system(size: 10))
+                .foregroundColor(.secondary)
+            
+            Text("·")
+                .foregroundColor(.secondary)
+            
+            Text(formatDuration(weekMeetingTime))
+                .font(.system(size: 11, weight: .medium))
+                .foregroundColor(.primary)
+            
+            Text("this week")
+                .font(.system(size: 10))
+                .foregroundColor(.secondary)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.horizontal, 12)
+        .padding(.vertical, 6)
+        .background(Color.secondary.opacity(0.08))
+    }
+    
+    /// Formats a time interval as "Xh Ym" or just "Xm" for short durations
+    private func formatDuration(_ interval: TimeInterval) -> String {
+        let totalMinutes = Int(interval / 60)
+        let hours = totalMinutes / 60
+        let minutes = totalMinutes % 60
+        
+        if hours > 0 && minutes > 0 {
+            return "\(hours)h \(minutes)m"
+        } else if hours > 0 {
+            return "\(hours)h"
+        } else if minutes > 0 {
+            return "\(minutes)m"
+        } else {
+            return "0m"
         }
     }
     
@@ -365,6 +422,11 @@ struct TodayAgendaView: View {
     
     private func loadEvents() {
         events = syncEngine.fetchEvents(for: selectedDate, startHour: startHour, endHour: endHour)
+    }
+    
+    private func loadMeetingTimes() {
+        todayMeetingTime = syncEngine.calculateMeetingTime(for: selectedDate)
+        weekMeetingTime = syncEngine.calculateMeetingTimeThisWeek()
     }
     
     // MARK: - Event Column Calculation

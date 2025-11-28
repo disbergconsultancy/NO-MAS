@@ -655,6 +655,117 @@ class SyncEngine: ObservableObject {
         return events
     }
     
+    // MARK: - Meeting Time Calculation
+    
+    /// Calculates total meeting time for a specific date (union of all event times, no double-counting overlaps)
+    func calculateMeetingTime(for date: Date) -> TimeInterval {
+        let calendar = Calendar.current
+        let startOfDay = calendar.startOfDay(for: date)
+        guard let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay) else {
+            return 0
+        }
+        
+        return calculateMeetingTime(from: startOfDay, to: endOfDay)
+    }
+    
+    /// Calculates total meeting time for the current week (Monday to today, union calculation)
+    func calculateMeetingTimeThisWeek() -> TimeInterval {
+        let calendar = Calendar.current
+        let today = Date()
+        
+        // Find Monday of current week (ISO 8601: Monday = 2)
+        var components = calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: today)
+        components.weekday = 2 // Monday
+        
+        guard let mondayOfWeek = calendar.date(from: components) else {
+            return 0
+        }
+        
+        // Calculate from Monday 00:00 to end of today
+        let startOfMonday = calendar.startOfDay(for: mondayOfWeek)
+        guard let endOfToday = calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: today)) else {
+            return 0
+        }
+        
+        return calculateMeetingTime(from: startOfMonday, to: endOfToday)
+    }
+    
+    /// Calculates total meeting time for a date range (union of all event times)
+    private func calculateMeetingTime(from startDate: Date, to endDate: Date) -> TimeInterval {
+        // Get enabled calendars only
+        let enabledCalendars = calendars.filter { enabledCalendarIds.contains($0.calendarIdentifier) }
+        
+        guard !enabledCalendars.isEmpty else {
+            return 0
+        }
+        
+        let predicate = eventStore.predicateForEvents(
+            withStart: startDate,
+            end: endDate,
+            calendars: enabledCalendars
+        )
+        
+        var events = eventStore.events(matching: predicate)
+        
+        // Filter out CalSync blocks and canceled events
+        events = events.filter { event in
+            // Skip CalSync blocks
+            if isBlockEvent(event) {
+                return false
+            }
+            // Skip canceled events
+            if event.status == .canceled {
+                return false
+            }
+            // Skip all-day events if setting is enabled
+            if event.isAllDay && !settings.syncAllDayEvents {
+                return false
+            }
+            return true
+        }
+        
+        // Convert events to time intervals
+        let intervals = events.map { event -> (start: Date, end: Date) in
+            // Clamp event times to the date range
+            let clampedStart = max(event.startDate, startDate)
+            let clampedEnd = min(event.endDate, endDate)
+            return (clampedStart, clampedEnd)
+        }.filter { $0.start < $0.end } // Only valid intervals
+        
+        // Calculate union of intervals (no double-counting overlaps)
+        return calculateUnionDuration(of: intervals)
+    }
+    
+    /// Calculates the total duration of the union of time intervals
+    /// This handles overlapping events by merging them
+    private func calculateUnionDuration(of intervals: [(start: Date, end: Date)]) -> TimeInterval {
+        guard !intervals.isEmpty else { return 0 }
+        
+        // Sort intervals by start time
+        let sorted = intervals.sorted { $0.start < $1.start }
+        
+        // Merge overlapping intervals
+        var merged: [(start: Date, end: Date)] = []
+        var current = sorted[0]
+        
+        for interval in sorted.dropFirst() {
+            if interval.start <= current.end {
+                // Overlapping or adjacent - extend current interval
+                current.end = max(current.end, interval.end)
+            } else {
+                // No overlap - save current and start new
+                merged.append(current)
+                current = interval
+            }
+        }
+        merged.append(current)
+        
+        // Sum up durations
+        return merged.reduce(0) { total, interval in
+            total + interval.end.timeIntervalSince(interval.start)
+        }
+    }
+    
     // MARK: - Notifications
     
     private func sendNotification(created: Int, updated: Int, deleted: Int) {

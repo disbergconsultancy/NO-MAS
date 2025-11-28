@@ -72,7 +72,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
             button.image = badgeImage
         } else {
             // Reset to normal icon
-            button.image = NSImage(systemSymbolName: "calendar.badge.clock", accessibilityDescription: "CalSync")
+            button.image = NSImage(systemSymbolName: "hand.raised.fill", accessibilityDescription: "NoMas")
         }
     }
     
@@ -82,8 +82,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         
         image.lockFocus()
         
-        // Draw base calendar icon
-        if let baseIcon = NSImage(systemSymbolName: "calendar", accessibilityDescription: nil) {
+        // Draw base hand icon
+        if let baseIcon = NSImage(systemSymbolName: "hand.raised.fill", accessibilityDescription: nil) {
             let config = NSImage.SymbolConfiguration(pointSize: 14, weight: .regular)
             if let configuredIcon = baseIcon.withSymbolConfiguration(config) {
                 configuredIcon.draw(in: NSRect(x: 0, y: 2, width: 16, height: 16))
@@ -207,7 +207,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         
         if let button = statusItem?.button {
-            button.image = NSImage(systemSymbolName: "calendar.badge.clock", accessibilityDescription: "CalSync")
+            button.image = NSImage(systemSymbolName: "hand.raised.fill", accessibilityDescription: "NoMas")
             button.action = #selector(statusBarButtonClicked(_:))
             button.sendAction(on: [.leftMouseUp, .rightMouseUp])
             button.target = self
@@ -408,7 +408,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     
     private func setupAgendaPopover() {
         let popover = NSPopover()
-        popover.contentSize = NSSize(width: 240, height: 380)
+        popover.contentSize = NSSize(width: 240, height: 400)
         popover.behavior = .transient
         popover.animates = true
         
