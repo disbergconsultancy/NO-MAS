@@ -13,6 +13,8 @@
 - 🚀 **Launch at Login** - Optionally start with macOS
 - 🔢 **Pending Changes Badge** - See how many changes are pending before sync
 - 🔁 **Smart Recurring Events** - Recurring events sync as a single series, not individual blocks
+- 👁️ **Agenda Glimpse** - Quick view of today's schedule with a single click
+- ⏱️ **Meeting Time Tracker** - See your total meeting time for today and this week
 
 ## How It Works
 
@@ -20,6 +22,32 @@
 2. For each event in Calendar A, it creates a "Busy - Calendar A" block in Calendar B, C, etc.
 3. Blocks are tagged with hidden markers to prevent sync loops
 4. When events are deleted or changed, corresponding blocks are updated automatically
+
+### Menu Bar Interactions
+
+- **Left-click** the menu bar icon to open the Agenda Glimpse view
+- **Right-click** the menu bar icon to access settings, sync controls, and calendar management
+
+### Agenda Glimpse
+
+The Agenda Glimpse provides a compact timeline view of your day:
+
+- **Day Navigation** - Browse through your calendar with previous/next day buttons, or jump to today
+- **Timeline View** - See your events laid out on a 24-hour timeline
+- **Calendar Colors** - Events are color-coded to match their source calendar
+- **Tentative Events** - Shown with a striped pattern to distinguish from confirmed meetings
+- **Current Time Indicator** - A red "now" line shows the current time when viewing today
+- **Overlapping Events** - Displayed side-by-side when multiple events overlap
+- **Smart Locations** - Virtual meeting URLs (Teams, Zoom, Meet, etc.) are displayed as "Online"
+- **All-Day Toggle** - Show or hide all-day events with a single click
+
+### Meeting Time Tracker
+
+At the top of the Agenda Glimpse, you'll see:
+- **Today's meeting time** - Total hours and minutes scheduled for the day
+- **This week's meeting time** - Total time spent in meetings this week
+
+Example: `2h 30m today · 12h 45m this week`
 
 ## Requirements
 
@@ -45,8 +73,8 @@ That's it! No Mas! will be installed to `/Applications/NoMas.app`.
 
 ```bash
 # Clone the repository
-git clone https://github.com/disbergconsultancy/CAL-SYNC.git
-cd CAL-SYNC
+git clone https://github.com/disbergconsultancy/NO-MAS.git
+cd NO-MAS
 
 # Install to /Applications
 make install
@@ -93,12 +121,12 @@ cp -r .build/release/NoMas.app /Applications/
    - Grant calendar access when prompted
 
 3. **Configure calendars**
-   - Click the calendar icon in the menu bar
+   - Right-click the hand icon in the menu bar
    - Go to Calendars submenu
    - Enable/disable calendars as needed
 
 4. **Adjust settings (optional)**
-   - Click Settings... in the menu
+   - Right-click and select Settings... in the menu
    - Configure sync interval, block title format, etc.
 
 ## Configuration
@@ -114,6 +142,7 @@ cp -r .build/release/NoMas.app /Applications/
 | Sync Recurring as Series | Sync recurring events as a single series instead of individual blocks | On |
 | Show Notifications | Notify on sync completion | On |
 | Launch at Login | Start No Mas! with macOS | Off |
+| Hide All-Day Events | Hide all-day events in Agenda Glimpse | Off |
 
 ### Block Title Format
 
@@ -177,21 +206,25 @@ No Mas! is lightweight and efficient:
 ### Project Structure
 
 ```
-CAL-SYNC/
+NO-MAS/
 ├── Package.swift                 # Swift Package manifest
 ├── Sources/NoMas/
-│   ├── NoMasApp.swift           # App entry point
+│   ├── CalSyncApp.swift         # App entry point
 │   ├── AppDelegate.swift        # Menu bar setup
 │   ├── Services/
 │   │   └── SyncEngine.swift     # Core sync logic
 │   ├── Models/
 │   │   └── Settings.swift       # App settings
 │   ├── Views/
-│   │   └── SettingsView.swift   # Settings UI
+│   │   ├── SettingsView.swift   # Settings UI
+│   │   └── TodayAgendaView.swift # Agenda Glimpse view
 │   ├── Utils/
 │   │   └── Logger.swift         # Logging utility
 │   └── Resources/
 │       └── Info.plist           # App metadata
+├── Sources/NoMasCore/
+│   ├── BlockMarker.swift        # Sync block marker utilities
+│   └── SyncLogic.swift          # Core sync logic
 ├── scripts/
 │   └── build.sh                 # Build script
 └── README.md
@@ -229,7 +262,7 @@ MIT License - See LICENSE file for details.
 
 ## Contributing
 
-Contributions welcome! Please open an issue or submit a pull request.
+Contributions welcome! Please open an issue or submit a pull request on [GitHub](https://github.com/disbergconsultancy/NO-MAS).
 
 ## Acknowledgments
 
